@@ -60,6 +60,12 @@ namespace FishNet.Transporting.Bayou
         [Tooltip("Address to connect.")]
         [SerializeField]
         private string _clientAddress = "localhost";
+        /// <summary>
+        /// Address to connect.
+        /// </summary>
+        [Tooltip("Path to connect.")] 
+        [SerializeField]
+        private string _clientPath = "";
         #endregion
 
         #region Private.
@@ -287,7 +293,7 @@ namespace FishNet.Transporting.Bayou
         /// </summary>
         public override string GetClientAddress()
         {
-            return _clientAddress;
+            return _clientAddress + _clientPath;
         }
 
         /// <summary>
@@ -319,6 +325,24 @@ namespace FishNet.Transporting.Bayou
         {
             return _port;
         }
+        
+        /// <summary>
+        /// Sets which path to use.
+        /// </summary>
+        /// <param name="path"></param>
+        public void SetPath(string path)
+        {
+            _clientPath = path;
+        }
+        
+        /// <summary>
+        /// Gets which path to use.
+        /// </summary>
+        /// <param name="port"></param>
+        public string GetPath()
+        {
+            return _clientPath;
+        }
         #endregion
 
         #region Start and stop.
@@ -331,7 +355,7 @@ namespace FishNet.Transporting.Bayou
             if (server)
                 return StartServer();
             else
-                return StartClient(_clientAddress);
+                return StartClient(_clientAddress, _clientPath);
         }
 
         /// <summary>
@@ -394,10 +418,10 @@ namespace FishNet.Transporting.Bayou
         /// Starts the client.
         /// </summary>
         /// <param name="address"></param>
-        private bool StartClient(string address)
+        private bool StartClient(string address, path)
         {
             _client.Initialize(this, _mtu);
-            return _client.StartConnection(address, _port, _useWss);
+            return _client.StartConnection(address, path, _port, _useWss);
         }
 
         /// <summary>

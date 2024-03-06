@@ -19,6 +19,10 @@ namespace FishNet.Transporting.Bayou.Client
         /// </summary>
         private string _address = string.Empty;
         /// <summary>
+        /// Path used by server.
+        /// </summary>
+        private string _path;
+        /// <summary>
         /// Port used by server.
         /// </summary>
         private ushort _port;
@@ -68,6 +72,7 @@ namespace FishNet.Transporting.Bayou.Client
             {
                 Scheme = scheme,
                 Host = _address,
+                Path = _path,
                 Port = _port
             };
             base.SetConnectionState(LocalConnectionState.Starting, false);
@@ -108,7 +113,7 @@ namespace FishNet.Transporting.Bayou.Client
         /// <param name="port"></param>
         /// <param name="channelsCount"></param>
         /// <param name="pollTime"></param>
-        internal bool StartConnection(string address, ushort port, bool useWss)
+        internal bool StartConnection(string address, string path, ushort port, bool useWss)
         {
             if (base.GetConnectionState() != LocalConnectionState.Stopped)
                 return false;
@@ -117,6 +122,7 @@ namespace FishNet.Transporting.Bayou.Client
             //Assign properties.
             _port = port;
             _address = address;
+            _path = path;
 
             ResetQueues();
             Socket(useWss);
